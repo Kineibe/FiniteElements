@@ -43,7 +43,7 @@ public class Settings {
     public void getSet() {
 //        try {
             // Scanner settings = new Scanner(Paths.get("settings"));
-            elementAmount = 5;
+            elementAmount = 20;
 //            equation.set(Degree.num, -1.0);
 //            equation.set(Degree.u, 1.0);
 //            equation.set(Degree.Du_dx, 1.0);

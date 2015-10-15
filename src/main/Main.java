@@ -13,6 +13,7 @@ public class Main {
     public static void main(String[] args) {
         Settings settings = new Settings();
         settings.getSet();
+        Analytical.prepare(settings);
         Gnuplot gnuplot = new Gnuplot("./out/", settings);
 
         Solver linear = solve(ElementType.Linear, settings);
@@ -28,6 +29,9 @@ public class Main {
         gnuplot.printToFile(analytical, frequency,
                 "text3.txt", "Analytical");
         gnuplot.prePrint();
+
+        System.out.println("Linear Type Difference: " + AnalyseResult.getAbsoluteDifference(linear.getBMatrix(), settings.getLeftX(), settings.getRightX()));
+        System.out.println("Linear Type Difference: " + AnalyseResult.getAbsoluteDifference(notLinear.getBMatrix(), settings.getLeftX(), settings.getRightX()));
     }
 
     public static Solver solve(ElementType type, Settings settings) {

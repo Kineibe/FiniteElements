@@ -33,19 +33,25 @@ public class Gnuplot {
     }
 
     public void prePrint() {
+        if (fileNames.size() == 0) {
+            System.out.println("Nothing to print to gnuplot script");
+            return;
+        }
         try {
             PrintWriter script = new PrintWriter(directory + scriptName);
-            script.print("set terminal x11 size 1360, 700\n" +
+            String scriptCode = "set terminal x11 size 1360, 700\n" +
                     "set title 'Result'\n" +
                     "set xlabel \"X\"\n" +
                     "set ylabel \"Y\"\n" +
                     "set xrange [" + settings.getLeftX() + ":" + settings.getRightX() + "]\n" +
                     "set yrange [" + min + ":" + max + "]\n" +
-                    "set grid\n" +
-                    "plot '" + fileNames.get(0) + "' using 1:2 w l lw 2 title '" + titles.get(0) + "',\\\n" +
-                    "     '" + fileNames.get(1) + "' using 1:2 w l lw 2 title '" + titles.get(1) + "',\\\n" +
-                    "     '" + fileNames.get(2) + "' using 1:2 w p lw 2 title '" + titles.get(2) + "'\n" +
-                    "pause -1");
+                    "set grid\n" + "plot ";
+            for (int i = 0; i < fileNames.size() - 1; ++i) {
+                scriptCode += "'" + fileNames.get(i) + "' using 1:2 w l lw 2 title '" + titles.get(i) + "',\\\n";
+            }
+            scriptCode += "'" + fileNames.get(fileNames.size() - 1) + "' using 1:2 w p lw 2 title '" + titles.get(fileNames.size() - 1) + "'\n";
+            scriptCode += "pause -1";
+            script.print(scriptCode);
             script.close();
         } catch (FileNotFoundException e) {
             System.out.println(e);

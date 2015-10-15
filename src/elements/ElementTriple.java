@@ -73,10 +73,12 @@ public class ElementTriple implements Element {
         return length;
     }
 
+    @Override
     public Vector <Vector <Double>> getAMatrix() {
         return AMatrix;
     }
 
+    @Override
     public Vector <Double> getBMatrix() {
         return BVector;
     }

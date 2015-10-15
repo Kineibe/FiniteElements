@@ -6,6 +6,7 @@ import elements.ElementTriple;
 import elements.ElementType;
 import utils.*;
 
+import java.util.ArrayList;
 import java.util.Vector;
 
 /**
@@ -116,7 +117,7 @@ public class Solver {
             AMatrix.get(num).set(num, 1.0);
         }
         if (constraint.getType().equals(ConstraintType.Second)) {
-            BMatrix.set(num, constraint.getValue() + BMatrix.get(num));
+            BMatrix.set(num, constraint.getValue() * equation.get(Degree.D2u_dx2)+ BMatrix.get(num));
         }
 
         constraint = settings.getRightConstraint();
@@ -129,7 +130,7 @@ public class Solver {
             AMatrix.get(num).set(num, 1.0);
         }
         if (constraint.getType().equals(ConstraintType.Second)) {
-            BMatrix.set(num, -1 * constraint.getValue() + BMatrix.get(num));
+            BMatrix.set(num, -1 * constraint.getValue() * equation.get(Degree.D2u_dx2)+ BMatrix.get(num));
         }
     }
 

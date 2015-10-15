@@ -10,7 +10,6 @@ public class IntegralEquation {
 
     public IntegralEquation() {
         this.a = new Vector<>();
-        // TODO wtf new Vector<<>(4) doesn't work=(
         a.add(0.0);
         a.add(0.0);
         a.add(0.0);

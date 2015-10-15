@@ -5,18 +5,12 @@ package utils;
  */
 public class Settings {
 
-    private static boolean printToFile = false;
-
     // Коэффициента уравнения
     private int elementAmount;
     private IntegralEquation equation = new IntegralEquation();
 
     private Constraint leftConstraint;
     private Constraint rightConstraint;
-
-    public boolean isToPrintToFile() {
-        return printToFile;
-    }
 
     public int getElementAmount() {
         return elementAmount;
@@ -49,18 +43,22 @@ public class Settings {
     public void getSet() {
 //        try {
             // Scanner settings = new Scanner(Paths.get("settings"));
-            elementAmount = 10;
-            equation.set(Degree.num, -1.0);
-            equation.set(Degree.u, 1.0);
-            equation.set(Degree.Du_dx, 1.0);
-            equation.set(Degree.D2u_dx2, 0.0);
+            elementAmount = 5;
 //            equation.set(Degree.num, -1.0);
-//            equation.set(Degree.u, 0.0);
-//            equation.set(Degree.Du_dx, 7.0);
-//            equation.set(Degree.D2u_dx2, 15.0);
+//            equation.set(Degree.u, 1.0);
+//            equation.set(Degree.Du_dx, 1.0);
+//            equation.set(Degree.D2u_dx2, 0.0);
+//        leftConstraint = new Constraint(1, 0, 0);
+//        rightConstraint = new Constraint(2, -2, 0);
 
-            leftConstraint = new Constraint(1, 0, 0);
-            rightConstraint = new Constraint(2, -2, 0);
+
+        equation.set(Degree.num, -1.0);
+        equation.set(Degree.u, 0.0);
+        equation.set(Degree.Du_dx, 7.0);
+        equation.set(Degree.D2u_dx2, 15.0);
+
+        leftConstraint = new Constraint(1, 0, -10);
+        rightConstraint = new Constraint(2, -5, 5);
 
             if (leftConstraint.getCoordinate() > rightConstraint.getCoordinate()) {
                 Constraint temp;

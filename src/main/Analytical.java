@@ -11,9 +11,9 @@ import java.util.function.Function;
  */
 public class Analytical {
     static Function result;
-    static int flag1 = 1;
-    static int flag2 = 0;
-    static int flag3 = 0;
+    static Double k1 = 0.0;
+    static Double k2 = 0.0;
+    static Double k3 = 0.0;
 
     static void prepare(Settings settings) {
         IntegralEquation equation = settings.getEquationA();
@@ -21,14 +21,18 @@ public class Analytical {
             System.out.println("Still not developed");
             System.exit(-1);
         }
+
         if (equation.get(Degree.u).equals(0.0)) {
-            flag1 = 0;
+            k1 = 0.0;
             if (!equation.get(Degree.Du_dx).equals(0.0)) {
-                flag2 = 1;
+                k2 = equation.get(Degree.num) / equation.get(Degree.Du_dx);
             } else {
-                flag3 = 1;
+                k3 = equation.get(Degree.num) / equation.get(Degree.u);
             }
+        } else {
+            k1 = equation.get(Degree.num) / equation.get(Degree.D2u_dx2) / 2.0;
         }
+
         Double discr = Math.pow(equation.get(Degree.Du_dx), 2) - 4.0 * equation.get(Degree.D2u_dx2) * equation.get(Degree.u);
         if (discr > 0.0) {
             final Double L1 = (-1 * equation.get(Degree.Du_dx) + Math.sqrt(discr)) / (2 * equation.get(Degree.D2u_dx2));
@@ -49,9 +53,9 @@ public class Analytical {
                 public Object apply(Object o) {
                     Double x = (Double) o;
                     return C1 * Math.exp(L1 * x) + C2 * Math.exp(L2 * x)
-                            - flag1 * x * x * equation.get(Degree.num) / equation.get(Degree.D2u_dx2) / 2.0
-                            - flag2 * x * equation.get(Degree.num) / equation.get(Degree.Du_dx)
-                            - flag3 * equation.get(Degree.num) / equation.get(Degree.u);
+                            - k1 * x * x
+                            - k2 * x
+                            - k3;
                 }
             };
         }
@@ -73,9 +77,9 @@ public class Analytical {
                 public Object apply(Object o) {
                     Double x = (Double) o;
                     return C1 * Math.exp(L * x) + C2 * x * Math.exp(L * x)
-                            - flag1 * x * x * equation.get(Degree.num) / equation.get(Degree.D2u_dx2) / 2.0
-                            - flag2 * x * equation.get(Degree.num) / equation.get(Degree.Du_dx)
-                            - flag3 * equation.get(Degree.num) / equation.get(Degree.u);
+                            - k1 * x * x
+                            - k2 * x
+                            - k3;
                 }
             };
         }

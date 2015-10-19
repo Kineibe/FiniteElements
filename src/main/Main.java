@@ -1,6 +1,7 @@
 package main;
 
 import elements.ElementType;
+import utils.Functions;
 import utils.Settings;
 
 import java.util.Vector;
@@ -30,8 +31,8 @@ public class Main {
                 "text3.txt", "Analytical");
         gnuplot.prePrint();
 
-        System.out.println("Linear Type Difference: " + AnalyseResult.getAbsoluteDifference(linear.getBMatrix(), settings.getLeftX(), settings.getRightX()));
-        System.out.println("Linear Type Difference: " + AnalyseResult.getAbsoluteDifference(notLinear.getBMatrix(), settings.getLeftX(), settings.getRightX()));
+//        System.out.println("Linear Type Difference: " + AnalyseResult.getAbsoluteDifference(linear.getBMatrix(), settings.getLeftX(), settings.getRightX()));
+//        System.out.println("Linear Type Difference: " + AnalyseResult.getAbsoluteDifference(notLinear.getBMatrix(), settings.getLeftX(), settings.getRightX()));
     }
 
     public static Solver solve(ElementType type, Settings settings) {

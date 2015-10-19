@@ -6,7 +6,6 @@ import elements.ElementTriple;
 import elements.ElementType;
 import utils.*;
 
-import java.util.ArrayList;
 import java.util.Vector;
 
 /**
@@ -138,6 +137,8 @@ public class Solver {
 //        Functions.printMatrix(AMatrix);
 //        Functions.printVector(BMatrix);
 //        System.out.println();
+        Functions.printMatrix(AMatrix);
+
         Gaus.solve(AMatrix, BMatrix);
 //        System.out.println();
 //        Functions.printMatrix(AMatrix);

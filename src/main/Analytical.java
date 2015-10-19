@@ -2,6 +2,7 @@ package main;
 
 import utils.*;
 
+import java.util.List;
 import java.util.Vector;
 import java.util.function.Function;
 
@@ -9,11 +10,10 @@ import java.util.function.Function;
  * Created by neikila on 27.09.15.
  */
 public class Analytical {
-    static Double L1;
-    static Double L2;
-    static Double C2;
-    static Double C1;
     static Function result;
+    static int flag1 = 1;
+    static int flag2 = 0;
+    static int flag3 = 0;
 
     static void prepare(Settings settings) {
         IntegralEquation equation = settings.getEquationA();
@@ -21,40 +21,72 @@ public class Analytical {
             System.out.println("Still not developed");
             System.exit(-1);
         }
+        if (equation.get(Degree.u).equals(0.0)) {
+            flag1 = 0;
+            if (!equation.get(Degree.Du_dx).equals(0.0)) {
+                flag2 = 1;
+            } else {
+                flag3 = 1;
+            }
+        }
         Double discr = Math.pow(equation.get(Degree.Du_dx), 2) - 4.0 * equation.get(Degree.D2u_dx2) * equation.get(Degree.u);
         if (discr > 0.0) {
-            L1 = (-1 * equation.get(Degree.Du_dx) + Math.sqrt(discr)) / (2 * equation.get(Degree.D2u_dx2));
-            L2 = (-1 * equation.get(Degree.Du_dx) - Math.sqrt(discr)) / (2 * equation.get(Degree.D2u_dx2));
+            final Double L1 = (-1 * equation.get(Degree.Du_dx) + Math.sqrt(discr)) / (2 * equation.get(Degree.D2u_dx2));
+            final Double L2 = (-1 * equation.get(Degree.Du_dx) - Math.sqrt(discr)) / (2 * equation.get(Degree.D2u_dx2));
 
             Vector <Vector <Double>> A = new Vector<>();
             Vector <Double> B = new Vector<>();
 
-            handleConstraint(settings.getLeftConstraint(), equation, A, B);
-            handleConstraint(settings.getRightConstraint(), equation, A, B);
+            handleConstraint(settings.getLeftConstraint(), equation, A, B, L1, L2, discr);
+            handleConstraint(settings.getRightConstraint(), equation, A, B, L1, L2, discr);
 
             Gaus.solve(A, B);
-            System.out.println("1) C2 = " + (-1 * 34.0 * 15.0 / (49.0 * Math.exp(7.0 / 3.0))));
-            C2 = B.get(1);
-            System.out.print("2) C2 = " + C2);
-            C1 = B.get(0);
+            final Double C2 = B.get(1);
+            final Double C1 = B.get(0);
 
             result = new Function() {
                 @Override
                 public Object apply(Object o) {
                     Double x = (Double) o;
-                    return C1 * Math.exp(L1 * x) + C2 * Math.exp(L2 * x) + x * 1.0 / 7.0;
+                    return C1 * Math.exp(L1 * x) + C2 * Math.exp(L2 * x)
+                            - flag1 * x * x * equation.get(Degree.num) / equation.get(Degree.D2u_dx2) / 2.0
+                            - flag2 * x * equation.get(Degree.num) / equation.get(Degree.Du_dx)
+                            - flag3 * equation.get(Degree.num) / equation.get(Degree.u);
                 }
             };
         }
         if (discr == 0.0) {
-            
+            final Double L = (-1 * equation.get(Degree.Du_dx) + Math.sqrt(discr)) / (2 * equation.get(Degree.D2u_dx2));
+
+            Vector <Vector <Double>> A = new Vector<>();
+            Vector <Double> B = new Vector<>();
+
+            handleConstraint(settings.getLeftConstraint(), equation, A, B, L, L, discr);
+            handleConstraint(settings.getRightConstraint(), equation, A, B, L, L, discr);
+
+            Gaus.solve(A, B);
+            final Double C2 = B.get(1);
+            final Double C1 = B.get(0);
+
+            result = new Function() {
+                @Override
+                public Object apply(Object o) {
+                    Double x = (Double) o;
+                    return C1 * Math.exp(L * x) + C2 * x * Math.exp(L * x)
+                            - flag1 * x * x * equation.get(Degree.num) / equation.get(Degree.D2u_dx2) / 2.0
+                            - flag2 * x * equation.get(Degree.num) / equation.get(Degree.Du_dx)
+                            - flag3 * equation.get(Degree.num) / equation.get(Degree.u);
+                }
+            };
         }
         if (discr < 0.0) {
 
         }
     }
 
-    static private void handleConstraint(Constraint constraint, IntegralEquation equation, Vector <Vector <Double>> A, Vector <Double> B) {
+    static private void handleConstraint(Constraint constraint, IntegralEquation equation,
+                                         List<Vector <Double>> A, List <Double> B,
+                                         Double L1, Double L2, Double discr) {
         if (constraint.getType().equals(ConstraintType.First)) {
             Vector <Double> temp = new Vector<>();
             temp.add(Math.exp(constraint.getCoordinate() * L1));
@@ -67,6 +99,11 @@ public class Analytical {
             } else {
                 BTemp += constraint.getCoordinate() * equation.get(Degree.num) / equation.get(Degree.Du_dx);
             }
+
+            if (discr.equals(0.0)) {
+                temp.set(1, temp.get(1) * constraint.getCoordinate());
+            }
+
             B.add(BTemp);
         } else {
             Vector <Double> temp = new Vector<>();
@@ -77,6 +114,9 @@ public class Analytical {
             Double BTemp = constraint.getValue();
             if (equation.get(Degree.u) == 0.0) {
                 BTemp += equation.get(Degree.num) / equation.get(Degree.Du_dx);
+            }
+            if (discr.equals(0.0)) {
+                temp.set(1, temp.get(1) + L1 * Math.exp(L1 * constraint.getCoordinate()));
             }
             B.add(BTemp);
         }

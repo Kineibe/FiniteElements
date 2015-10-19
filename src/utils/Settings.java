@@ -43,7 +43,7 @@ public class Settings {
     public void getSet() {
 //        try {
             // Scanner settings = new Scanner(Paths.get("settings"));
-            elementAmount = 20;
+            elementAmount = 3;
 //            equation.set(Degree.num, -1.0);
 //            equation.set(Degree.u, 1.0);
 //            equation.set(Degree.Du_dx, 1.0);
@@ -57,8 +57,8 @@ public class Settings {
         equation.set(Degree.Du_dx, 7.0);
         equation.set(Degree.D2u_dx2, 15.0);
 
-        leftConstraint = new Constraint(1, 0, -10);
-        rightConstraint = new Constraint(2, -5, 5);
+        leftConstraint = new Constraint(2, -6, 5);
+        rightConstraint = new Constraint(1, 0, -10);
 
             if (leftConstraint.getCoordinate() > rightConstraint.getCoordinate()) {
                 Constraint temp;

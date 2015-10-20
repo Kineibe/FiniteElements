@@ -11,29 +11,10 @@ import java.util.Vector;
 public class ElementLinear implements Element {
     private final Double x;
     private final Double length;
-    private final Vector <Vector <Double>> AMatrix;
-    private final Vector <Double> BVector;
 
     public ElementLinear(double x, double length, IntegralEquation eq) {
         this.x = x;
         this.length = length;
-        AMatrix = new Vector<>();
-        BVector = new Vector<>();
-
-        Vector <Double> temp = new Vector<>();
-
-        temp.add(-1* eq.get(Degree.D2u_dx2) / length - eq.get(Degree.Du_dx) / 2 + eq.get(Degree.u) * length / 3);
-        temp.add(eq.get(Degree.D2u_dx2) / length + eq.get(Degree.Du_dx) / 2 + eq.get(Degree.u) * length / 6);
-        AMatrix.add(temp);
-
-        temp = new Vector<>();
-        temp.add(eq.get(Degree.D2u_dx2) / length - eq.get(Degree.Du_dx) / 2 + eq.get(Degree.u) * length / 6);
-        temp.add(-1 * eq.get(Degree.D2u_dx2) / length + eq.get(Degree.Du_dx) / 2 + eq.get(Degree.u) * length / 3);
-
-        AMatrix.add(temp);
-
-        BVector.add(-1 * eq.get(Degree.num) * length / 2.0);
-        BVector.add(-1 * eq.get(Degree.num) * length / 2.0);
     }
 
     public Double getLeft() {
@@ -48,11 +29,30 @@ public class ElementLinear implements Element {
         return length;
     }
 
-    public Vector <Vector <Double>> getAMatrix() {
+    public Vector <Vector <Double>> getAMatrix(IntegralEquation eq) {
+        Vector <Vector <Double>> AMatrix = new Vector<>();
+
+        Vector <Double> temp = new Vector<>();
+
+        temp.add(-1* eq.get(Degree.D2u_dx2) / length - eq.get(Degree.Du_dx) / 2 + eq.get(Degree.u) * length / 3);
+        temp.add(eq.get(Degree.D2u_dx2) / length + eq.get(Degree.Du_dx) / 2 + eq.get(Degree.u) * length / 6);
+        AMatrix.add(temp);
+
+        temp = new Vector<>();
+        temp.add(eq.get(Degree.D2u_dx2) / length - eq.get(Degree.Du_dx) / 2 + eq.get(Degree.u) * length / 6);
+        temp.add(-1 * eq.get(Degree.D2u_dx2) / length + eq.get(Degree.Du_dx) / 2 + eq.get(Degree.u) * length / 3);
+
+        AMatrix.add(temp);
+
         return AMatrix;
     }
 
-    public Vector <Double> getBMatrix() {
+    public Vector <Double> getBMatrix(IntegralEquation eq) {
+        Vector <Double> BVector = new Vector<>();
+
+        BVector.add(-1 * eq.get(Degree.num) * length / 2.0);
+        BVector.add(-1 * eq.get(Degree.num) * length / 2.0);
+
         return BVector;
     }
 }

@@ -43,8 +43,8 @@ public class Solver {
                 }
                 break;
         }
-        Functions.printMatrix(elements.get(0).getAMatrix());
-        Functions.printVector(elements.get(0).getBMatrix());
+        Functions.printMatrix(elements.get(0).getAMatrix(equation));
+        Functions.printVector(elements.get(0).getBMatrix(equation));
     }
 
     public ElementType getElementType() {
@@ -79,7 +79,7 @@ public class Solver {
             }
 
             int startIndex = i * elementType.getLocalSizeReduced();
-            Vector <Vector <Double>> current = elements.get(i).getAMatrix();
+            Vector <Vector <Double>> current = elements.get(i).getAMatrix(equation);
             for (int k = 0; k < current.size(); ++k) {
                 for (int j = 0; j < current.get(k).size(); ++j) {
                     AMatrix.get(startIndex + k).set(startIndex + j,
@@ -96,7 +96,7 @@ public class Solver {
         BMatrix.add(0.0);
         for (int i = 0; i < elements.size(); ++i) {
             int startIndex = i * elementType.getLocalSizeReduced();
-            Vector <Double> current = elements.get(i).getBMatrix();
+            Vector <Double> current = elements.get(i).getBMatrix(equation);
             BMatrix.set(startIndex, BMatrix.get(startIndex) + current.get(0));
             for (int j = 1; j < current.size(); ++j) {
                 BMatrix.add(current.get(j));
@@ -137,8 +137,11 @@ public class Solver {
 //        Functions.printMatrix(AMatrix);
 //        Functions.printVector(BMatrix);
 //        System.out.println();
+        System.out.println();
+        System.out.println(elementType);
         Functions.printMatrix(AMatrix);
-
+        Functions.printVector(BMatrix);
+        System.out.println();
         Gaus.solve(AMatrix, BMatrix);
 //        System.out.println();
 //        Functions.printMatrix(AMatrix);

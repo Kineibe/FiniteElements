@@ -16,7 +16,7 @@ public class AnalyseResult {
                 maxDifference = diff;
             }
         }
-        return Analytical.function(right);
+        return maxDifference;
     }
 
 }

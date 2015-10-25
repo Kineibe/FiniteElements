@@ -76,10 +76,15 @@ public class Gnuplot {
         try {
             PrintWriter file = new PrintWriter(directory + filename);
             Double step = (settings.getRightX() - settings.getLeftX()) / (y2.size() - 1);
+            System.out.println("Step = " + step);
+            System.out.println("Step = " + 0.1);
             Double position = settings.getLeftX();
-            for (Double value: y2) {
-                file.println(" " + position + ' ' + value);
-                position += step;
+//            for (Double value: y2) {
+//                file.println(" " + position + ' ' + value);
+//                position += step;
+//            }
+            for (int i = 0; i < y2.size(); ++i) {
+                file.println(" " + (position + i * step)+ ' ' + y2.get(i));
             }
             file.close();
             fileNames.add(filename);

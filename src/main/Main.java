@@ -19,7 +19,7 @@ public class Main {
         Solver linear = solve(ElementType.Linear, settings);
         Solver notLinear = solve(ElementType.Second, settings);
 
-        Double frequency = settings.getFrequency();
+        Double frequency = settings.getStep();
         List<Double> analytical = Analytical.getVector(settings, frequency);
 
         gnuplot.printToFile(linear.getElements(),

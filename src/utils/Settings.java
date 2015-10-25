@@ -36,8 +36,8 @@ public class Settings {
         return leftConstraint;
     }
 
-    public Double getFrequency() {
-        return 2.0;
+    public Double getStep() {
+        return 0.1;
     }
 
     public void getSet() {

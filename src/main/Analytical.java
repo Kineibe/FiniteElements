@@ -132,23 +132,12 @@ public class Analytical {
         return (Double) result.apply(x);
     }
 
-    static public List<Double> getVector(Settings settings, Double frequency) {
-        ArrayList<Double> result = new ArrayList<>();
-        Double step = (settings.getRightX() - settings.getLeftX()) / settings.getElementAmount() / frequency;
+    static public List<Double> getVector(Settings settings, Double step) {
+        List<Double> result = new ArrayList<>();
         Double position = settings.getLeftX();
-        for (int i = 0; i < settings.getElementAmount() * frequency + 1; ++i) {
-            result.add(function(position));
-            position += step;
-        }
-        return result;
-    }
-
-    static public List<Double> getVectorTemp(Settings settings, Double step) {
-        ArrayList<Double> result = new ArrayList<>();
-        Double position = settings.getLeftX();
-        while (position <= settings.getRightX()) {
-            result.add(function(position));
-            position += step;
+        int amount = (int) ((settings.getRightX() - settings.getLeftX()) / step) + 1;
+        for (int i = 0; i < amount; ++i) {
+            result.add(function(position + i * step));
         }
         return result;
     }

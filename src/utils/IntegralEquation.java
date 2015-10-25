@@ -1,15 +1,16 @@
 package utils;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by neikila on 14.08.15.
  */
 public class IntegralEquation {
-    private Vector<Double> a;
+    private List<Double> a;
 
     public IntegralEquation() {
-        this.a = new Vector<>();
+        this.a = new ArrayList<>();
         a.add(0.0);
         a.add(0.0);
         a.add(0.0);

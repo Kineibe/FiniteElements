@@ -3,7 +3,7 @@ package main;
 import elements.ElementType;
 import utils.Settings;
 
-import java.util.Vector;
+import java.util.List;
 
 /**
  * Created by neikila on 10.04.15.
@@ -20,13 +20,13 @@ public class Main {
         Solver notLinear = solve(ElementType.Second, settings);
 
         Double frequency = settings.getFrequency();
-        Vector <Double> analytical = Analytical.getVector(settings, frequency);
+        List<Double> analytical = Analytical.getVector(settings, frequency);
 
-        gnuplot.printToFile(linear.getBMatrix(), (double) linear.getElementType().getLocalSizeReduced(),
+        gnuplot.printToFile(linear.getElements(),
                 "text1.txt", "Two points");
-        gnuplot.printToFile(notLinear.getBMatrix(), (double)notLinear.getElementType().getLocalSizeReduced(),
+        gnuplot.printToFile(notLinear.getElements(),
                 "text2.txt", "Three points");
-        gnuplot.printToFile(analytical, frequency,
+        gnuplot.printToFileAnalytic(analytical,
                 "text3.txt", "Analytical");
         gnuplot.prePrint();
 

@@ -1,14 +1,13 @@
 package main;
 
 import java.util.List;
-import java.util.Vector;
 
 /**
  * Created by neikila on 20.09.15.
  */
 public class Gaus {
 
-    public static void solve(Vector <Vector <Double>> AMatrix, Vector <Double> BMatrix) {
+    public static void solve(List <List <Double>> AMatrix, List <Double> BMatrix) {
 
         for (int i = 0; i < AMatrix.size(); ++i) {
             check(AMatrix, i, BMatrix);
@@ -30,11 +29,11 @@ public class Gaus {
         }
     }
 
-    private static void check(List <Vector <Double>> array, int index, List <Double> b) {
+    private static void check(List <List <Double>> array, int index, List <Double> b) {
         if (array.get(index).get(index) == 0.0) {
             for (int i = index + 1; i < array.size(); ++i) {
                 if (array.get(i).get(index) != 0.0) {
-                    Vector <Double> temp = array.get(index);
+                    List <Double> temp = array.get(index);
                     array.set(index, array.get(i));
                     array.set(i, temp);
 
@@ -47,7 +46,7 @@ public class Gaus {
         }
     }
 
-    private static void toDefault(Vector <Double> array, int startFrom, Vector <Double> b) {
+    private static void toDefault(List <Double> array, int startFrom, List <Double> b) {
         Double divider = array.get(startFrom);
         if (divider == 0.0) {
             divider = 1.0;
@@ -58,7 +57,7 @@ public class Gaus {
         b.set(startFrom, b.get(startFrom) / divider);
     }
 
-    private static void differ(Vector <Double> base, Vector <Double> toEdit, int startFrom) {
+    private static void differ(List <Double> base, List <Double> toEdit, int startFrom) {
         Double multiplier = toEdit.get(startFrom);
         for (int i = startFrom; i < toEdit.size(); ++i) {
             toEdit.set(i, toEdit.get(i) - base.get(i) * multiplier);

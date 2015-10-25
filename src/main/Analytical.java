@@ -2,8 +2,8 @@ package main;
 
 import utils.*;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 import java.util.function.Function;
 
 /**
@@ -38,8 +38,8 @@ public class Analytical {
             final Double L1 = (-1 * equation.get(Degree.Du_dx) + Math.sqrt(discr)) / (2 * equation.get(Degree.D2u_dx2));
             final Double L2 = (-1 * equation.get(Degree.Du_dx) - Math.sqrt(discr)) / (2 * equation.get(Degree.D2u_dx2));
 
-            Vector <Vector <Double>> A = new Vector<>();
-            Vector <Double> B = new Vector<>();
+            List <List <Double>> A = new ArrayList<>();
+            List <Double> B = new ArrayList<>();
 
             handleConstraint(settings.getLeftConstraint(), equation, A, B, L1, L2, discr);
             handleConstraint(settings.getRightConstraint(), equation, A, B, L1, L2, discr);
@@ -63,8 +63,8 @@ public class Analytical {
         if (discr == 0.0) {
             final Double L = (-1 * equation.get(Degree.Du_dx) + Math.sqrt(discr)) / (2 * equation.get(Degree.D2u_dx2));
 
-            Vector <Vector <Double>> A = new Vector<>();
-            Vector <Double> B = new Vector<>();
+            List <List <Double>> A = new ArrayList<>();
+            List <Double> B = new ArrayList<>();
 
             handleConstraint(settings.getLeftConstraint(), equation, A, B, L, L, discr);
             handleConstraint(settings.getRightConstraint(), equation, A, B, L, L, discr);
@@ -91,10 +91,10 @@ public class Analytical {
     }
 
     static private void handleConstraint(Constraint constraint, IntegralEquation equation,
-                                         List<Vector <Double>> A, List <Double> B,
+                                         List<List <Double>> A, List <Double> B,
                                          Double L1, Double L2, Double discr) {
         if (constraint.getType().equals(ConstraintType.First)) {
-            Vector <Double> temp = new Vector<>();
+            List <Double> temp = new ArrayList<>();
             temp.add(Math.exp(constraint.getCoordinate() * L1));
             temp.add(Math.exp(constraint.getCoordinate() * L2));
             A.add(temp);
@@ -112,7 +112,7 @@ public class Analytical {
 
             B.add(BTemp);
         } else {
-            Vector <Double> temp = new Vector<>();
+            List <Double> temp = new ArrayList<>();
             temp.add(L1 * Math.exp(constraint.getCoordinate() * L1));
             temp.add(L2 * Math.exp(constraint.getCoordinate() * L2));
             A.add(temp);
@@ -129,18 +129,24 @@ public class Analytical {
     }
 
     static public Double function(Double x) {
-//        return 1.0/49.0 * (7.0 * x + 15.0 * Math.exp(-7.0 / 15.0 * (x + 6.0)) - 15.0 / Math.exp(14.0/5.0));
-//        return 1 - Math.exp(-x);
-//        return 0.0;
         return (Double) result.apply(x);
-//        return 1.0/49.0 * (7.0 * (x - 70.0) - 510.0 * Math.exp(-7.0 / 15.0 * (x + 5.0)) + 510.0 / Math.exp(7.0/3.0));
     }
 
-    static public Vector<Double> getVector(Settings settings, Double frequency) {
-        Vector <Double> result = new Vector<>();
+    static public List<Double> getVector(Settings settings, Double frequency) {
+        ArrayList<Double> result = new ArrayList<>();
         Double step = (settings.getRightX() - settings.getLeftX()) / settings.getElementAmount() / frequency;
         Double position = settings.getLeftX();
         for (int i = 0; i < settings.getElementAmount() * frequency + 1; ++i) {
+            result.add(function(position));
+            position += step;
+        }
+        return result;
+    }
+
+    static public List<Double> getVectorTemp(Settings settings, Double step) {
+        ArrayList<Double> result = new ArrayList<>();
+        Double position = settings.getLeftX();
+        while (position <= settings.getRightX()) {
             result.add(function(position));
             position += step;
         }

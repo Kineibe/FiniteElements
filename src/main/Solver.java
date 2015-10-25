@@ -6,24 +6,29 @@ import elements.ElementTriple;
 import elements.ElementType;
 import utils.*;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 /**
  * Created by neikila on 20.09.15.
  */
 public class Solver {
-    private final Vector <Vector<Double>> AMatrix;
-    private Vector <Double> BMatrix;
+    private final List <List <Double>> AMatrix;
+    private List <Double> BMatrix;
     private final IntegralEquation equation;
-    private final Vector <Element> elements;
+    private final List <Element> elements;
+
+    public List<Element> getElements() {
+        return elements;
+    }
+
     private Settings settings;
     private ElementType elementType;
 
     public Solver(Settings settings, ElementType elementType) {
-        elements = new Vector<>();
-        AMatrix = new Vector<>();
-        BMatrix = new Vector<>();
+        elements = new ArrayList<>();
+        AMatrix = new ArrayList<>();
+        BMatrix = new ArrayList<>();
         equation = settings.getEquationA();
         this.settings = settings;
         this.elementType = elementType;
@@ -50,11 +55,11 @@ public class Solver {
         return elementType;
     }
 
-    public Vector <Vector <Double>> getAMatrix() {
+    public List <List <Double>> getAMatrix() {
         return AMatrix;
     }
 
-    public Vector <Double> getBMatrix() {
+    public List <Double> getBMatrix() {
         return BMatrix;
     }
 
@@ -62,7 +67,7 @@ public class Solver {
 
         int size = settings.getElementAmount() * elementType.getLocalSizeReduced() + 1;
 
-        AMatrix.add(new Vector<>(size));
+        AMatrix.add(new ArrayList<>(size));
         for (int j = 0; j < size; ++j) {
             AMatrix.get(0).add(0.0);
         }
@@ -70,7 +75,7 @@ public class Solver {
         for (int i = 0; i < elements.size(); ++i) {
 
             for (int k = 0; k < elementType.getLocalSizeReduced(); ++k) {
-                Vector<Double> temp = new Vector<>(size);
+                List<Double> temp = new ArrayList<>(size);
                 for (int j = 0; j < size; ++j) {
                     temp.add(0.0);
                 }
@@ -78,7 +83,7 @@ public class Solver {
             }
 
             int startIndex = i * elementType.getLocalSizeReduced();
-            Vector <Vector <Double>> current = elements.get(i).getAMatrix(equation);
+            List <List <Double>> current = elements.get(i).getAMatrix(equation);
             for (int k = 0; k < current.size(); ++k) {
                 for (int j = 0; j < current.get(k).size(); ++j) {
                     AMatrix.get(startIndex + k).set(startIndex + j,
@@ -95,7 +100,7 @@ public class Solver {
         BMatrix.add(0.0);
         for (int i = 0; i < elements.size(); ++i) {
             int startIndex = i * elementType.getLocalSizeReduced();
-            Vector <Double> current = elements.get(i).getBMatrix(equation);
+            List <Double> current = elements.get(i).getBMatrix(equation);
             BMatrix.set(startIndex, BMatrix.get(startIndex) + current.get(0));
             for (int j = 1; j < current.size(); ++j) {
                 BMatrix.add(current.get(j));
@@ -142,12 +147,12 @@ public class Solver {
         int counter = 0;
         for (Element el: elements) {
             List<Double> values = el.getValues();
-            for (int i = 0; i < values.size() - 1; ++i) {
+            for (int i = 0; i < elementType.getLocalSizeReduced(); ++i) {
                 values.add(BMatrix.get(counter++));
             }
             values.add(BMatrix.get(counter));
         }
-//        System.out.println();
+        System.out.println();
 //        Functions.printMatrix(AMatrix);
 //        Functions.printVector(BMatrix);
 //        System.out.println();

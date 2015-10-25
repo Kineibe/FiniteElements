@@ -3,6 +3,8 @@ package elements;
 import utils.Degree;
 import utils.IntegralEquation;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 /**
@@ -11,10 +13,12 @@ import java.util.Vector;
 public class ElementTriple implements Element {
     private final Double x;
     private final Double length;
+    private ArrayList <Double> values;
 
     public ElementTriple(double x, double length, IntegralEquation eq) {
         this.x = x;
         this.length = length;
+        this.values = new ArrayList<>(4);
     }
 
     public Double getLeft() {
@@ -27,6 +31,10 @@ public class ElementTriple implements Element {
 
     public Double getLength() {
         return length;
+    }
+
+    public List<Double> getValues() {
+        return values;
     }
 
     @Override

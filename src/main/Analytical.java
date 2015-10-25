@@ -58,6 +58,7 @@ public class Analytical {
                             - k3;
                 }
             };
+            System.out.println();
         }
         if (discr == 0.0) {
             final Double L = (-1 * equation.get(Degree.Du_dx) + Math.sqrt(discr)) / (2 * equation.get(Degree.D2u_dx2));
@@ -84,7 +85,8 @@ public class Analytical {
             };
         }
         if (discr < 0.0) {
-
+            System.out.println("Still not developed");
+            System.exit(-1);
         }
     }
 

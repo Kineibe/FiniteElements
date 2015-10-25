@@ -6,6 +6,7 @@ import elements.ElementTriple;
 import elements.ElementType;
 import utils.*;
 
+import java.util.List;
 import java.util.Vector;
 
 /**
@@ -43,8 +44,6 @@ public class Solver {
                 }
                 break;
         }
-        Functions.printMatrix(elements.get(0).getAMatrix(equation));
-        Functions.printVector(elements.get(0).getBMatrix(equation));
     }
 
     public ElementType getElementType() {
@@ -134,15 +133,20 @@ public class Solver {
     }
 
     public void solve() {
+//        System.out.println();
+//        System.out.println(elementType);
 //        Functions.printMatrix(AMatrix);
 //        Functions.printVector(BMatrix);
 //        System.out.println();
-        System.out.println();
-        System.out.println(elementType);
-        Functions.printMatrix(AMatrix);
-        Functions.printVector(BMatrix);
-        System.out.println();
         Gaus.solve(AMatrix, BMatrix);
+        int counter = 0;
+        for (Element el: elements) {
+            List<Double> values = el.getValues();
+            for (int i = 0; i < values.size() - 1; ++i) {
+                values.add(BMatrix.get(counter++));
+            }
+            values.add(BMatrix.get(counter));
+        }
 //        System.out.println();
 //        Functions.printMatrix(AMatrix);
 //        Functions.printVector(BMatrix);

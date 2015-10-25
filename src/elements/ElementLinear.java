@@ -3,6 +3,8 @@ package elements;
 import utils.Degree;
 import utils.IntegralEquation;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 /**
@@ -11,10 +13,16 @@ import java.util.Vector;
 public class ElementLinear implements Element {
     private final Double x;
     private final Double length;
+    private ArrayList <Double> values;
 
     public ElementLinear(double x, double length, IntegralEquation eq) {
         this.x = x;
         this.length = length;
+        this.values = new ArrayList<>(2);
+    }
+
+    public List<Double> getValues() {
+        return values;
     }
 
     public Double getLeft() {

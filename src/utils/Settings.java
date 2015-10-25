@@ -41,39 +41,24 @@ public class Settings {
     }
 
     public void getSet() {
-//        try {
-            // Scanner settings = new Scanner(Paths.get("settings"));
-            elementAmount = 3;
-//            equation.set(Degree.num, -1.0);
-//            equation.set(Degree.u, 1.0);
-//            equation.set(Degree.Du_dx, 1.0);
-//            equation.set(Degree.D2u_dx2, 0.0);
-//        leftConstraint = new Constraint(1, 0, 0);
-//        rightConstraint = new Constraint(2, -2, 0);
+        elementAmount = 20;
 
-
-        equation.set(Degree.num, -1.0);
+        equation.set(Degree.num, 12.0);
         equation.set(Degree.u, 0.0);
-        equation.set(Degree.Du_dx, 7.0);
-        equation.set(Degree.D2u_dx2, 15.0);
+        equation.set(Degree.Du_dx, -3.0);
+        equation.set(Degree.D2u_dx2, 2.0);
 
-        leftConstraint = new Constraint(2, -6, 5);
-        rightConstraint = new Constraint(1, 0, -10);
+        leftConstraint = new Constraint(2, -3, 5);
+        rightConstraint = new Constraint(1, 2, 10);
 
-            if (leftConstraint.getCoordinate() > rightConstraint.getCoordinate()) {
-                Constraint temp;
-                temp = leftConstraint;
-                leftConstraint = rightConstraint;
-                rightConstraint = temp;
-            }
+        if (leftConstraint.getCoordinate() > rightConstraint.getCoordinate()) {
+            Constraint temp;
+            temp = leftConstraint;
+            leftConstraint = rightConstraint;
+            rightConstraint = temp;
+        }
 
-            System.out.println("Left: " + leftConstraint.getCoordinate());
-            System.out.println("Right: " + rightConstraint.getCoordinate());
-//
-//        } catch (Exception e) {
-//            System.out.print(e);
-//            System.out.println("Ups. No Settings");
-//            System.exit(-1);
-//        }
+        System.out.println("Left: " + leftConstraint.getCoordinate());
+        System.out.println("Right: " + rightConstraint.getCoordinate());
     }
 }

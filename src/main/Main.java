@@ -25,7 +25,7 @@ public class Main {
         gnuplot.printToFile(linear.getElements(),
                 "text1.txt", "Two points");
         gnuplot.printToFile(notLinear.getElements(),
-                "text2.txt", "Three points");
+                "text2.txt", "Four points");
         gnuplot.printToFileAnalytic(analytical,
                 "text3.txt", "Analytical");
         gnuplot.prePrint();

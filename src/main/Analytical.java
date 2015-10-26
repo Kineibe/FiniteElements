@@ -130,6 +130,7 @@ public class Analytical {
 
     static public Double function(Double x) {
         return (Double) result.apply(x);
+//        return 2.0/3.0 * (6*x + Math.exp( 3.0 * (x + 3) / 2.0) - Math.exp(15.0/2.0) + 3);
     }
 
     static public List<Double> getVector(Settings settings, Double step) {

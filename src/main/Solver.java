@@ -33,21 +33,19 @@ public class Solver {
         this.settings = settings;
         this.elementType = elementType;
 
-        Double length = (settings.getRightX() - settings.getLeftX()) / settings.getElementAmount();
         Double position = settings.getLeftX();
-        switch (elementType) {
-            case Linear:
-                for (int i = 0; i < settings.getElementAmount(); ++i) {
-                    elements.add(new ElementLinear(position, length, equation));
-                    position += length;
-                }
-                break;
-            case Second:
-                for (int i = 0; i < settings.getElementAmount(); ++i) {
-                    elements.add(new ElementTriple(position, length, equation));
-                    position += length;
-                }
-                break;
+        for (int i = 0; i < settings.getElementAmount(); ++i) {
+            Double length = (settings.getRightX() - settings.getLeftX()) / settings.getElementAmount();
+            elements.add(createElement(position, length));
+            position += length;
+        }
+    }
+
+    private Element createElement(Double position, Double length) {
+        if (elementType.equals(ElementType.Linear)) {
+            return new ElementLinear(position, length, equation);
+        } else {
+            return new ElementTriple(position, length, equation);
         }
     }
 
